@@ -1,0 +1,15 @@
+{
+  "packages": [
+    "faas-cli",
+    "pre-commit",
+    "ruby"
+  ],
+  "shell": {
+    "init_hook": [
+      "pre-commit install --install-hooks"
+    ]
+  },
+  "nixpkgs": {
+    "commit": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04"
+  }
+}

@@ -1,0 +1,13 @@
+tasks:
+  - name: Setup
+    before: |
+      curl -sfL gpm.simonemms.com | bash
+
+      gpm install faas-cli kubectl pre-commit
+
+      pre-commit install --install-hooks
+
+vscode:
+  extensions:
+    - donjayamanne.git-extension-pack
+    - EditorConfig.EditorConfig
