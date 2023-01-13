@@ -5,9 +5,47 @@ tasks:
 
       gpm install faas-cli kubectl pre-commit
 
+      gp sync-done faas-cli
+
       pre-commit install --install-hooks
+
+      exit 0
+
+  - name: OpenFaaS
+    command: |
+      gp sync-await faas-cli
+
+      faas-cli template store pull golang-middleware
+
+      if [ -n "${KUBECONFIG_BASE64-}" ]; then
+        kubectl port-forward -n openfaas svc/gateway 8080:8080 &
+
+        sleep 5
+
+        OPENFAAS_PASSWORD="$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 -d)"
+        OPENFAAS_USERNAME="$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-user}" | base64 -d)"
+
+        echo "${OPENFAAS_PASSWORD}" | faas-cli login \
+          --username "${OPENFAAS_USERNAME}" \
+          --password-stdin
+
+        faas-cli list
+
+        echo "---"
+        echo "URL: http://127.0.0.1:8080"
+        echo "Username: ${OPENFAAS_USERNAME}"
+        echo "Password: ${OPENFAAS_PASSWORD}"
+        echo "---"
+      fi
+
+ports:
+  - name: OpenFaaS
+    port: 8080
+    onOpen: notify
+    visibility: private
 
 vscode:
   extensions:
     - donjayamanne.git-extension-pack
     - EditorConfig.EditorConfig
+    - golang.go
