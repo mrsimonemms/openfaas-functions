@@ -1,0 +1,24 @@
+---
+apiVersion: k3d.io/v1alpha4
+kind: Simple
+metadata:
+  name: openfaas
+servers: 1
+agents: 1
+registries:
+  create:
+    name: registry.localhost
+    host: "0.0.0.0"
+    hostPort: "5000"
+  use: []
+ports:
+  # Expose OpenFaaS gateway
+  - port: 8080:8080
+    nodeFilters:
+      - loadbalancer
+options:
+  k3d:
+    wait: true
+  kubeconfig:
+    switchCurrentContext: true
+    updateDefaultKubeconfig: true

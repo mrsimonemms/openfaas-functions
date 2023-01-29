@@ -1,12 +1,18 @@
 {
   "packages": [
+    "docker",
     "faas-cli",
+    "kube3d",
+    "kubectl",
+    "kubernetes-helm-wrapped",
+    "openjdk",
     "pre-commit",
     "ruby"
   ],
   "shell": {
     "init_hook": [
-      "pre-commit install --install-hooks"
+      "make templates provision",
+      "pre-commit install --install-hooks -t pre-commit -t commit-msg"
     ]
   },
   "nixpkgs": {

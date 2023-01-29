@@ -1,0 +1,6 @@
+functions:
+  currency:
+    image:
+      repository: ghcr.io/mrsimonemms/openfaas-functions/currency
+      tag: latest
+    envvars: {}

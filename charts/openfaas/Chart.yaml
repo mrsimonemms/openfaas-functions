@@ -1,0 +1,10 @@
+apiVersion: v2
+name: openfaas
+description: My OpenFaaS functions
+type: application
+version: 0.0.0
+dependencies:
+  - name: openfaas
+    version: "^9.0.0"
+    repository: https://openfaas.github.io/faas-netes
+    condition: openfaas.enabled

@@ -1,0 +1,36 @@
+K3D_CONFIG ?= k3d.config.yaml
+REGISTRY_ADDRESS ?= registry.localhost:5000
+
+destroy:
+	@skaffold config unset local-cluster
+	@skaffold config unset default-repo
+	@skaffold config unset kube-context
+	@k3d cluster delete --config ${K3D_CONFIG}
+.PHONY: destroy
+
+openfaas_login:
+	@kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 -d | faas-cli login \
+		--username "$(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-user}" | base64 -d)" \
+		--password-stdin
+
+	@echo "==="
+	@echo "Host:     http://127.0.0.1:8080"
+	@echo "Username: $(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-user}" | base64 -d)"
+	@echo "Password: $(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 -d)"
+	@echo "==="
+.PHONY: openfaas_login
+
+provision:
+	@k3d cluster create --config ${K3D_CONFIG} || true
+	@kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+	@skaffold config set local-cluster false
+	@skaffold config set default-repo ${REGISTRY_ADDRESS}
+.PHONY: provision
+
+serve:
+	@skaffold dev
+.PHONY: serve
+
+templates:
+	@faas-cli template store pull golang-middleware
+.PHONY: templates

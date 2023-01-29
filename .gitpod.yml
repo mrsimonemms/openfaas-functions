@@ -7,7 +7,7 @@ tasks:
 
       gp sync-done faas-cli
 
-      pre-commit install --install-hooks
+      pre-commit install --install-hooks -t pre-commit -t commit-msg
 
       exit 0
 

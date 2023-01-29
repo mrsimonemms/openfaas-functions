@@ -1,0 +1,37 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: openfaas-functions
+build:
+  tagPolicy:
+    dateTime: {}
+  artifacts:
+    - image: currency
+      custom:
+        buildCommand: ./scripts/skaffoldBuildFunction.sh currency
+        dependencies:
+          paths:
+            - 'currency/**/*'
+deploy:
+  helm:
+    releases:
+      - name: openfaas
+        namespace: openfaas
+        chartPath: charts/openfaas
+        wait: true
+        skipBuildDependencies: true
+        valuesFiles:
+          - charts/openfaas/values.yaml
+      - name: functions
+        namespace: openfaas-fn
+        chartPath: charts/functions
+        valuesFiles:
+          - charts/functions/values.yaml
+        wait: true
+        skipBuildDependencies: true
+        setValueTemplates:
+          functions:
+            currency:
+              image:
+                repository: "{{.IMAGE_REPO_currency}}"
+                tag: "{{.IMAGE_TAG_currency}}"

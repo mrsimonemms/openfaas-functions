@@ -8,6 +8,8 @@ node_modules
 Thumbs.db
 .commit
 .devbox
+.envrc
+charts/*.tgz
 
 template
 build
