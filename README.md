@@ -1,22 +1,26 @@
-# New
+# OpenFaaS Functions
 
 <!-- toc -->
 
-* [Open in Gitpod](#open-in-gitpod)
 * [Open in devbox](#open-in-devbox)
 
 <!-- Regenerate with "pre-commit run -a markdown-toc" -->
 
 <!-- tocstop -->
 
-A blank project for getting started. This is configured for [Gitpod](https://gitpod.io)
-and [devbox](https://www.jetpack.io/devbox).
-
-## Open in Gitpod
-
-* [Open in Gitpod](https://gitpod.io/from-referrer/)
+My collection of [OpenFaaS](https://openfaas.com) functions
 
 ## Open in devbox
 
 * `curl -fsSL https://get.jetpack.io/devbox | bash`
 * `devbox shell`
+* `make serve`
+
+After a few moments, you will have a running Kubernetes cluster with the
+OpenFaaS gateway available on [localhost:8080](http://localhost:8080). To get the
+username and password, run `make openfaas_login`.
+
+**IMPORTANT** You will need to install [Skaffold](https://skaffold.dev/docs/install/)
+manually. The version in nix is `2.0.2` which has a
+[bug](https://github.com/GoogleContainerTools/skaffold/issues/8243). This is fixed
+`2.0.4` and above.

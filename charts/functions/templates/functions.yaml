@@ -1,0 +1,36 @@
+{{- $ := . }}
+{{- $labels := include "openfaas.labels" .  -}}
+
+{{- range $key, $value := .Values.functions }}
+---
+apiVersion: openfaas.com/v1
+kind: Function
+metadata:
+  name: {{ $key | lower }}
+  labels: {{ $labels | nindent 4 }}
+spec:
+  name: {{ $key | lower }}
+  image:  {{ $value.image.repository }}:{{ $value.image.tag }}
+  {{- with $value.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    com.openfaas.scale.min: {{ include "openfaas.functionScaleMin" $value | quote }}
+    com.openfaas.scale.max: {{ include "openfaas.functionScaleMax" $value | quote }}
+  environment:
+    read_timeout: {{ $value.timeout | default "10s" | quote }}
+    write_timeout: {{ $value.timeout | default "10s" | quote }}
+    exec_timeout: {{ $value.timeout | default "10s" | quote }}
+    {{- range $envKey, $envValue := $value.envvars }}
+    {{ $envKey }}: {{ $envValue | quote }}
+    {{- end }}
+    # Common parameters
+  secrets:
+    {{- if $.Values.imagePullSecret }}
+    - {{ $.Values.imagePullSecret }}
+    {{- end }}
+    {{- range $value.secrets }}
+    - {{ . }}
+    {{- end }}
+{{- end }}
