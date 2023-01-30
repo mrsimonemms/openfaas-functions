@@ -2,6 +2,7 @@
   "packages": [
     "docker",
     "faas-cli",
+    "go",
     "kube3d",
     "kubectl",
     "kubernetes-helm-wrapped",
