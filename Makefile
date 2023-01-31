@@ -1,6 +1,12 @@
 K3D_CONFIG ?= k3d.config.yaml
 REGISTRY_ADDRESS ?= registry.localhost:5000
 
+deps:
+	@for chart in $$(ls -d ./charts/*); do \
+		helm dependency update $$chart ; \
+	done
+.PHONY: deps
+
 destroy:
 	@skaffold config unset local-cluster
 	@skaffold config unset default-repo
@@ -25,6 +31,19 @@ provision:
 	@kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
 	@skaffold config set local-cluster false
 	@skaffold config set default-repo ${REGISTRY_ADDRESS}
+
+	@helm upgrade \
+		--atomic \
+		--cleanup-on-fail \
+		--create-namespace \
+		--install \
+		--namespace="openfaas" \
+		--reset-values \
+		--wait \
+		openfaas \
+		./charts/openfaas/
+
+	@$(MAKE) openfaas_login
 .PHONY: provision
 
 serve:

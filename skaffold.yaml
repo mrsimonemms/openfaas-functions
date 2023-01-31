@@ -15,13 +15,6 @@ build:
 deploy:
   helm:
     releases:
-      - name: openfaas
-        namespace: openfaas
-        chartPath: charts/openfaas
-        wait: true
-        skipBuildDependencies: true
-        valuesFiles:
-          - charts/openfaas/values.yaml
       - name: functions
         namespace: openfaas-fn
         chartPath: charts/functions

@@ -1,6 +1,6 @@
 dependencies:
 - name: openfaas
   repository: https://openfaas.github.io/faas-netes
-  version: 9.0.2
-digest: sha256:d69825036c9c8ac25c46bb6dab805f34972d99574a52d1eda01f0191643b1b13
-generated: "2023-01-29T21:53:47.506587449Z"
+  version: 11.1.1
+digest: sha256:e79f2e5a8c7dd74419c3535a542065c725b21722264478e71e7ac1f1807fa2e3
+generated: "2023-01-31T19:57:16.16238666Z"
