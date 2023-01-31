@@ -14,7 +14,7 @@ openfaas_login:
 		--password-stdin
 
 	@echo "==="
-	@echo "Host:     http://127.0.0.1:8080"
+	@echo "Host:     http://$(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-user}" | base64 -d):$(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 -d)@127.0.0.1:8080"
 	@echo "Username: $(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-user}" | base64 -d)"
 	@echo "Password: $(shell kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 -d)"
 	@echo "==="
