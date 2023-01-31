@@ -1,6 +1,12 @@
 K3D_CONFIG ?= k3d.config.yaml
 REGISTRY_ADDRESS ?= registry.localhost:5000
 
+deps:
+	@for chart in $$(ls -d ./charts/*); do \
+		helm dependency update $$chart ; \
+	done
+.PHONY: deps
+
 destroy:
 	@skaffold config unset local-cluster
 	@skaffold config unset default-repo

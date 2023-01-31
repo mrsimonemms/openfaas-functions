@@ -9,7 +9,7 @@ Thumbs.db
 .commit
 .devbox
 .envrc
-charts/*.tgz
+charts/*/charts/*.tgz
 
 template
 build
