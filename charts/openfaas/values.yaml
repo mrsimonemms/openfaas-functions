@@ -5,6 +5,4 @@ openfaas:
   ingress:
     enabled: true
   openfaasPRO: false
-  operator:
-    create: true
   serviceType: LoadBalancer

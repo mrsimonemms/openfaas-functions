@@ -6,4 +6,4 @@ functions:
   currency:
     lang: golang-middleware
     handler: ./currency
-    image:  ghcr.io/${OWNER:-mrsimonemms}/openfaas-functions/currency:${TAG:-dev}
+    image: ${IMAGE:-ghcr.io/${OWNER:-mrsimonemms}/openfaas-functions/currency:${TAG:-dev}}

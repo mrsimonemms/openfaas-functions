@@ -22,16 +22,24 @@ deploy:
         skipBuildDependencies: true
         valuesFiles:
           - charts/openfaas/values.yaml
-      - name: functions
-        namespace: openfaas-fn
-        chartPath: charts/functions
-        valuesFiles:
-          - charts/functions/values.yaml
-        wait: true
-        skipBuildDependencies: true
-        setValueTemplates:
-          functions:
-            currency:
-              image:
-                repository: "{{.IMAGE_REPO_currency}}"
-                tag: "{{.IMAGE_TAG_currency}}"
+  kubectl:
+    defaultNamespace: openfaas-fn
+    hooks:
+      before:
+        - host:
+            command:
+              - faas-cli
+              - deploy
+#      - name: functions
+#        namespace: openfaas-fn
+#        chartPath: charts/functions
+#        valuesFiles:
+#          - charts/functions/values.yaml
+#        wait: true
+#        skipBuildDependencies: true
+#        setValueTemplates:
+#          functions:
+#            currency:
+#              image:
+#                repository: "{{.IMAGE_REPO_currency}}"
+#                tag: "{{.IMAGE_TAG_currency}}"
